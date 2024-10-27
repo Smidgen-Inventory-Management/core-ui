@@ -1,3 +1,17 @@
+import { AudioWaveform, BookOpen, Shapes, Command, House, GalleryVerticalEnd, Settings2 } from 'lucide-react';
+
+
+
+import * as React from 'react';
+
+
+
+import { NavMain } from '@/components/nav/sidebar/nav-main';
+import { NavUser } from '@/components/nav/sidebar/nav-user';
+import { TeamSwitcher } from '@/components/nav/sidebar/team-switcher';
+import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarRail } from '@/components/ui/sidebar';
+
+
 /*
  * Smidgen
  *
@@ -22,26 +36,6 @@
  *   You should have received a copy of the GNU General Public License
  *   along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-import {
-  AudioWaveform,
-  BookOpen,
-  Shapes,
-  Command,
-  House,
-  GalleryVerticalEnd,
-  Map,
-  PieChart,
-  Settings2,
-  SquareTerminal
-} from 'lucide-react'
-
-import * as React from 'react'
-
-import { NavMain } from '@/components/nav/sidebar/nav-main'
-import { NavUser } from '@/components/nav/sidebar/nav-user'
-import { TeamSwitcher } from '@/components/nav/sidebar/team-switcher'
-import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarRail } from '@/components/ui/sidebar'
-
 const data = {
   user: {
     name: 'shadcn',
@@ -75,7 +69,7 @@ const data = {
         {
           title: 'Dashboard',
           url: '/'
-        },
+        }
       ]
     },
     {
@@ -86,7 +80,7 @@ const data = {
         {
           title: 'List All',
           url: 'equipment'
-        },
+        }
       ]
     },
     {
@@ -140,7 +134,7 @@ const data = {
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   return (
-    <Sidebar collapsible='icon' {...props}>
+    <Sidebar collapsible='icon'{...props}>
       <SidebarHeader>
         <TeamSwitcher teams={data.teams} />
       </SidebarHeader>

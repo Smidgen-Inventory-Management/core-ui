@@ -1,3 +1,15 @@
+import { useLocation } from 'react-router-dom'
+
+import { useState, useEffect } from 'react'
+
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbSeparator
+} from '@/components/ui/breadcrumb'
+
 /*
  * Smidgen
  *
@@ -22,18 +34,6 @@
  *   You should have received a copy of the GNU General Public License
  *   along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-import { useLocation } from 'react-router-dom'
-
-import { useState, useEffect } from 'react'
-
-import {
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  BreadcrumbList,
-  BreadcrumbSeparator
-} from '@/components/ui/breadcrumb'
-
 export function AppBreadcrumb({ ...props }: React.ComponentProps<typeof Breadcrumb>) {
   const pathState = useLocation()
   const [currentPath, setCurrentPath] = useState<string[]>([])

@@ -147,6 +147,28 @@ export function DataTable<TData, TValue>({ columns, data }: DataTableProps<TData
             </DropdownMenuContent>
           </DropdownMenu>
         </div>
+        <div>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant='outline'>Add New Equipment</Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent>
+              {pageSizes.map((size) => (
+                <DropdownMenuItem
+                  key={size}
+                  onClick={() => {
+                    const newSize = size === 'All' ? table.getRowCount() + 1 : size
+                    table.setPageSize(newSize as number)
+                    setSelectedPageSize(newSize as number)
+                  }}
+                  className={`${selectedPageSize === (size === 'All' ? table.getRowCount() + 1 : size) ? 'bg-slate-200' : ''}`}
+                >
+                  {size}
+                </DropdownMenuItem>
+              ))}
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </div>
       </div>
       {/* Table */}
       <div className='rounded-md border'>

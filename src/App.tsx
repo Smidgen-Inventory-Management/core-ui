@@ -34,14 +34,15 @@ import { SidebarInset, SidebarProvider, SidebarTrigger } from '@/components/ui/s
 import { Equipment, getEquipment } from './api/equipment'
 import { columns } from './components/table/columns'
 import { DataTable } from './components/table/data-table'
+import { Toaster } from './components/ui/toaster'
 
 function App() {
-  const [equipmentData, setEquipmentData] = useState<Equipment[]>([])
+  const [equipmentData, setEquipmentData] = useState<Equipment[] | null>([])
 
   useEffect(() => {
     const fetchEquipmentData = async () => {
       const equipment = await getEquipment()
-      setEquipmentData(equipment)
+      setEquipmentData(equipment ? equipment : null)
     }
 
     fetchEquipmentData()
@@ -75,6 +76,8 @@ function Layout() {
     <SidebarProvider defaultOpen={false}>
       <AppSidebar />
       <SidebarInset>
+        <Toaster />
+
         <header className='flex h-16 shrink-0 items-center gap-2 transition-[width,height] ease-linear group-has-[[data-collapsible=icon]]/sidebar-wrapper:h-12'>
           <SidebarTrigger className='ml-5' />
           <Separator className='mx-1 h-7' orientation='vertical' decorative={false} />

@@ -1,68 +1,30 @@
-/*
- * Smidgen
- *
- * Core UI for interfacing with Smidgen.
- *
- *   Smidgen aims to simplify and automate common tasks that logisticians
- *   conduct on a daily basis so they can focus on the effective distribution
- *   of materiel, as well as maintain an accurate record keeping book of
- *   receiving, issuance, audits, surpluses, amongst other logistical tasks.
- *   Copyright (C) 2024  Jose Hernandez
- *
- *   This program is free software: you can redistribute it and/or modify
- *   it under the terms of the GNU General Public License as published by
- *   the Free Software Foundation, either version 3 of the License, or
- *   (at your option) any later version.
- *
- *   This program is distributed in the hope that it will be useful,
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *   GNU General Public License for more details.
- *
- *   You should have received a copy of the GNU General Public License
- *   along with this program.  If not, see <https://www.gnu.org/licenses/>.
- */
-'use client';
+'use client'
 
-import { ColumnDef, ColumnFiltersState, SortingState, flexRender, getCoreRowModel, getFilteredRowModel, getPaginationRowModel, getSortedRowModel, useReactTable, VisibilityState } from '@tanstack/react-table';
+import {
+  ColumnDef,
+  ColumnFiltersState,
+  SortingState,
+  flexRender,
+  getCoreRowModel,
+  getFilteredRowModel,
+  getPaginationRowModel,
+  getSortedRowModel,
+  useReactTable,
+  VisibilityState
+} from '@tanstack/react-table'
 
+import { useState } from 'react'
 
-
-import { useState } from 'react';
-
-
-
-import { Button } from '@/components/ui/button';
-import { DropdownMenu, DropdownMenuCheckboxItem, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
-import { Input } from '@/components/ui/input';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-
-
-/*
- * Smidgen
- *
- * Core UI for interfacing with Smidgen.
- *
- *   Smidgen aims to simplify and automate common tasks that logisticians
- *   conduct on a daily basis so they can focus on the effective distribution
- *   of materiel, as well as maintain an accurate record keeping book of
- *   receiving, issuance, audits, surpluses, amongst other logistical tasks.
- *   Copyright (C) 2024  Jose Hernandez
- *
- *   This program is free software: you can redistribute it and/or modify
- *   it under the terms of the GNU General Public License as published by
- *   the Free Software Foundation, either version 3 of the License, or
- *   (at your option) any later version.
- *
- *   This program is distributed in the hope that it will be useful,
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *   GNU General Public License for more details.
- *
- *   You should have received a copy of the GNU General Public License
- *   along with this program.  If not, see <https://www.gnu.org/licenses/>.
- */
-
+import { Button } from '@/components/ui/button'
+import {
+  DropdownMenu,
+  DropdownMenuCheckboxItem,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger
+} from '@/components/ui/dropdown-menu'
+import { Input } from '@/components/ui/input'
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 
 /*
  * Smidgen
@@ -91,7 +53,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
-  data: TData[]
+  data: TData[] | null
 }
 
 export function DataTable<TData, TValue>({ columns, data }: DataTableProps<TData, TValue>) {
@@ -100,7 +62,6 @@ export function DataTable<TData, TValue>({ columns, data }: DataTableProps<TData
   const [sorting, setSorting] = useState<SortingState>([])
   const [rowSelection, setRowSelection] = useState({})
   const [selectedPageSize, setSelectedPageSize] = useState<number>(0)
-  const pageSizes = [1, 10, 20, 50, 100, 'All'] as const
   const [pagination, setPagination] = useState({
     pageIndex: 0,
     pageSize: 10
@@ -126,6 +87,7 @@ export function DataTable<TData, TValue>({ columns, data }: DataTableProps<TData
       pagination
     }
   })
+  const pageSizes = [1, 10, 20, 50, 100, 'All'] as const
 
   return (
     <div>
@@ -203,7 +165,7 @@ export function DataTable<TData, TValue>({ columns, data }: DataTableProps<TData
             ))}
           </TableHeader>
           <TableBody>
-            {table.getRowModel().rows?.length ? (
+            {table.getRowModel().rows?.length > 0 ? (
               table.getRowModel().rows.map((row) => (
                 <TableRow key={row.id} data-state={row.getIsSelected() && 'selected'}>
                   {row.getVisibleCells().map((cell) => (

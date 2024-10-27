@@ -67,23 +67,15 @@ const data = {
   ],
   navMain: [
     {
-      title: 'Dashboard',
+      title: 'Home',
       url: '',
       icon: House,
       isActive: true,
       items: [
         {
-          title: 'Home',
+          title: 'Dashboard',
           url: '/'
         },
-        {
-          title: 'Starred',
-          url: '#'
-        },
-        {
-          title: 'Settings',
-          url: '#'
-        }
       ]
     },
     {
@@ -95,14 +87,6 @@ const data = {
           title: 'List All',
           url: 'equipment'
         },
-        {
-          title: 'Explorer',
-          url: '#'
-        },
-        {
-          title: 'Quantum',
-          url: '#'
-        }
       ]
     },
     {

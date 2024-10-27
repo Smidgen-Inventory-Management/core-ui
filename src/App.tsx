@@ -24,50 +24,28 @@
  */
 import { Routes, Route, Outlet } from 'react-router-dom'
 
+import { useEffect, useState } from 'react'
+
 import { AppBreadcrumb } from '@/components/nav/breadcrumb/app-breadcrumb'
 import { AppSidebar } from '@/components/nav/sidebar/app-sidebar'
 import { Separator } from '@/components/ui/separator'
 import { SidebarInset, SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar'
 
-import { Equipment, columns } from './components/table/columns'
+import { Equipment, getEquipment } from './api/equipment'
+import { columns } from './components/table/columns'
 import { DataTable } from './components/table/data-table'
 
-type StatusType = 'Deployable' | 'Not Deployable' | 'Maintenance' | 'Surplussed' | 'Unknown'
-
-function getRandomDate(): string {
-  const start = new Date(2020, 0, 1).getTime()
-  const end = new Date().getTime()
-  const randomDate = new Date(start + Math.random() * (end - start))
-  return randomDate.toISOString().split('T')[0]
-}
-
-function getRandomStatus(): StatusType {
-  const statuses: StatusType[] = ['Deployable', 'Not Deployable', 'Maintenance', 'Surplussed', 'Unknown']
-  return statuses[Math.floor(Math.random() * statuses.length)]
-}
-
-function generateRandomAsset(): Equipment {
-  return {
-    id: Math.floor(Math.random() * 1000),
-    BusinessUnitID: `BusinessUnit-${Math.floor(Math.random() * 100)}`,
-    Manufacturer: `Manufacturer${Math.floor(Math.random() * 10) + 1}`,
-    Model: `Model${Math.floor(Math.random() * 1000)}`,
-    Description: `Description of asset ${Math.floor(Math.random() * 1000)}`,
-    Status: getRandomStatus(),
-    DateReceived: getRandomDate(),
-    LastInventoried: getRandomDate()
-  }
-}
-
-function getData(): Equipment[] {
-  let mockData: Equipment[] = []
-  for (let index = 0; index < 100; index++) {
-    mockData.push(generateRandomAsset())
-  }
-  return mockData
-}
 function App() {
-  const data = getData()
+  const [equipmentData, setEquipmentData] = useState<Equipment[]>([])
+
+  useEffect(() => {
+    const fetchEquipmentData = async () => {
+      const equipment = await getEquipment()
+      setEquipmentData(equipment)
+    }
+
+    fetchEquipmentData()
+  }, [])
   return (
     <Routes>
       <Route path='/' element={<Layout />}>
@@ -86,7 +64,7 @@ function App() {
             </>
           }
         />
-        <Route path='equipment' element={<DataTable columns={columns} data={data} />} />
+        <Route path='equipment' element={<DataTable columns={columns} data={equipmentData} />} />
       </Route>
     </Routes>
   )

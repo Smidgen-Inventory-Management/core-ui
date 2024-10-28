@@ -34,7 +34,7 @@ import {
  *   You should have received a copy of the GNU General Public License
  *   along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-export function AppBreadcrumb({ ...props }: React.ComponentProps<typeof Breadcrumb>) {
+export function AppBreadcrumb() {
   const pathState = useLocation()
   const [currentPath, setCurrentPath] = useState<string[]>([])
 

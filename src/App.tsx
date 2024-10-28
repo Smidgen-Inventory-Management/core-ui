@@ -1,13 +1,17 @@
+import { Sun, Moon } from 'lucide-react'
 import { Routes, Route, Outlet } from 'react-router-dom'
 
 import { AppBreadcrumb } from '@/components/nav/breadcrumb/app-breadcrumb'
 import { AppSidebar } from '@/components/nav/sidebar/app-sidebar'
+import { ThemeProvider } from '@/components/theme-provider'
+import { useTheme } from '@/components/theme-provider'
+import { Button } from '@/components/ui/button'
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu'
 import { Separator } from '@/components/ui/separator'
 import { SidebarInset, SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar'
+import { Toaster } from '@/components/ui/toaster'
+import { DashboardPage } from '@/pages/dashboard'
 import { DataPage } from '@/pages/equipmentList'
-
-import { Toaster } from './components/ui/toaster'
-import { DashboardPage } from './pages/dashboard'
 
 /*
  * Smidgen
@@ -36,16 +40,20 @@ import { DashboardPage } from './pages/dashboard'
 
 function App() {
   return (
-    <Routes>
-      <Route path='/' element={<Layout />}>
-        <Route index element={<DashboardPage />} />
-        <Route path='equipment' element={<DataPage />} />
-      </Route>
-    </Routes>
+    <ThemeProvider defaultTheme='dark' storageKey='vite-ui-theme'>
+      <Routes>
+        <Route path='/' element={<Layout />}>
+          <Route index element={<DashboardPage />} />
+          <Route path='equipment' element={<DataPage />} />
+        </Route>
+      </Routes>
+    </ThemeProvider>
   )
 }
 
 function Layout() {
+  const { setTheme } = useTheme()
+
   return (
     <SidebarProvider defaultOpen={false}>
       <AppSidebar />
@@ -59,6 +67,20 @@ function Layout() {
         <div className='w-[93vw] ml-10'>
           <Outlet />
         </div>
+        <DropdownMenu >
+          <DropdownMenuTrigger asChild className='absolute bottom-5 right-0'>
+            <Button variant='outline' size='icon'>
+              <Sun className='h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0' />
+              <Moon className='absolute h-[1.2rem] w-[1.2rem] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100' />
+              <span className='sr-only'>Toggle theme</span>
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align='end'>
+            <DropdownMenuItem onClick={() => setTheme('light')}>Light</DropdownMenuItem>
+            <DropdownMenuItem onClick={() => setTheme('dark')}>Dark</DropdownMenuItem>
+            <DropdownMenuItem onClick={() => setTheme('system')}>System</DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
       </SidebarInset>
     </SidebarProvider>
   )

@@ -1,8 +1,35 @@
+'use client'
+
 import { Search } from 'lucide-react'
+import { TrendingUp } from 'lucide-react'
+import { Area, AreaChart, CartesianGrid, XAxis } from 'recharts'
 
 import { Button } from '@/components/ui/button'
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from '@/components/ui/card'
+import { ChartConfig, ChartContainer, ChartTooltip, ChartTooltipContent } from '@/components/ui/chart'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
+
+export const description = 'A stacked area chart'
+
+const chartData = [
+  { month: 'January', desktop: 186, mobile: 80 },
+  { month: 'February', desktop: 305, mobile: 200 },
+  { month: 'March', desktop: 237, mobile: 120 },
+  { month: 'April', desktop: 73, mobile: 190 },
+  { month: 'May', desktop: 209, mobile: 130 },
+  { month: 'June', desktop: 214, mobile: 140 }
+]
+
+const chartConfig = {
+  desktop: {
+    label: 'Desktop',
+    color: 'hsl(var(--chart-1))'
+  },
+  mobile: {
+    label: 'Mobile',
+    color: 'hsl(var(--chart-2))'
+  }
+} satisfies ChartConfig
 
 export function DashboardPage() {
   return (
@@ -19,7 +46,7 @@ export function DashboardPage() {
           <div className='flex items-center justify-between space-y-2'>
             <h2 className='text-3xl font-bold tracking-tight'>Welcome, &#123;user&#125;</h2>
             <div className='flex items-center space-x-2'>
-              <Button>Download as Report</Button>
+              <Button onClick={() => window.print()}>Download as Report</Button>
             </div>
           </div>
           <Tabs defaultValue='overview' className='space-y-4'>
@@ -37,6 +64,21 @@ export function DashboardPage() {
             </TabsList>
             <TabsContent value='overview' className='space-y-4'>
               <div className='grid gap-4 md:grid-cols-2 lg:grid-cols-4'>
+                <Card className='col-span-4'>
+                  <CardHeader>
+                    <CardTitle>Overview</CardTitle>
+                  </CardHeader>
+                  <CardContent className='pl-6'>
+                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Eaque fugit unde nisi placeat voluptatum
+                    incidunt error dolores velit adipisci nam voluptatibus, molestias reiciendis minus maxime mollitia,
+                    voluptates vitae temporibus ducimus omnis accusamus officiis vel alias, doloribus quam. Molestias,
+                    magni fuga odio harum in delectus ratione rem distinctio ex debitis atque eos architecto accusantium
+                    nobis voluptas praesentium adipisci consequuntur doloribus laborum sequi reprehenderit impedit quod
+                    ducimus quis? Corporis itaque maxime laudantium sed tempore dolorem, nesciunt, esse tenetur, nostrum
+                    magni excepturi a! Aliquam non, deleniti explicabo repudiandae velit quis incidunt quod quidem quia.
+                    Tenetur odio nesciunt dolorum quae ad ullam minima voluptas!
+                  </CardContent>
+                </Card>
                 <Card>
                   <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-2'>
                     <CardTitle className='text-sm font-medium'>Total Revenue</CardTitle>
@@ -58,7 +100,7 @@ export function DashboardPage() {
                     <p className='text-xs text-muted-foreground'>+20.1% from last month</p>
                   </CardContent>
                 </Card>
-                
+
                 <Card>
                   <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-2'>
                     <CardTitle className='text-sm font-medium'>Subscriptions</CardTitle>
@@ -125,28 +167,67 @@ export function DashboardPage() {
                     <p className='text-xs text-muted-foreground'>+201 since last hour</p>
                   </CardContent>
                 </Card>
-              </div>
-              <div className='grid gap-4 md:grid-cols-2 lg:grid-cols-7'>
-                <Card className='col-span-4'>
+                <Card>
                   <CardHeader>
-                    <CardTitle>Overview</CardTitle>
+                    <CardTitle>Area Chart - Stacked</CardTitle>
+                    <CardDescription>Showing total visitors for the last 6 months</CardDescription>
                   </CardHeader>
-                  <CardContent className='pl-2'></CardContent>
-                </Card>
-                <Card className='col-span-3'>
-                  <CardHeader>
-                    <CardTitle>Recent Sales</CardTitle>
-                    <CardDescription>You made 265 sales this month.</CardDescription>
-                  </CardHeader>
-                  <CardContent></CardContent>
+                  <CardContent>
+                    <ChartContainer config={chartConfig}>
+                      <AreaChart
+                        accessibilityLayer
+                        data={chartData}
+                        margin={{
+                          left: 12,
+                          right: 12
+                        }}
+                      >
+                        <CartesianGrid vertical={false} />
+                        <XAxis
+                          dataKey='month'
+                          tickLine={false}
+                          axisLine={false}
+                          tickMargin={8}
+                          tickFormatter={(value) => value.slice(0, 3)}
+                        />
+                        <ChartTooltip cursor={false} content={<ChartTooltipContent indicator='dot' />} />
+                        <Area
+                          dataKey='mobile'
+                          type='natural'
+                          fill='var(--color-mobile)'
+                          fillOpacity={0.4}
+                          stroke='var(--color-mobile)'
+                          stackId='a'
+                        />
+                        <Area
+                          dataKey='desktop'
+                          type='natural'
+                          fill='var(--color-desktop)'
+                          fillOpacity={0.4}
+                          stroke='var(--color-desktop)'
+                          stackId='a'
+                        />
+                      </AreaChart>
+                    </ChartContainer>
+                  </CardContent>
+                  <CardFooter>
+                    <div className='flex w-full items-start gap-2 text-sm'>
+                      <div className='grid gap-2'>
+                        <div className='flex items-center gap-2 font-medium leading-none'>
+                          Trending up by 5.2% this month <TrendingUp className='h-4 w-4' />
+                        </div>
+                        <div className='flex items-center gap-2 leading-none text-muted-foreground'>
+                          January - June 2024
+                        </div>
+                      </div>
+                    </div>
+                  </CardFooter>
                 </Card>
               </div>
             </TabsContent>
           </Tabs>
         </div>
-        
       </div>
-      
     </>
   )
 }

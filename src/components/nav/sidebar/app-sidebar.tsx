@@ -1,15 +1,11 @@
-import { AudioWaveform, BookOpen, Shapes, Command, House, GalleryVerticalEnd, Settings2 } from 'lucide-react';
+import { AudioWaveform, BookOpen, Shapes, Command, House, GalleryVerticalEnd, Settings2} from 'lucide-react'
 
+import * as React from 'react'
 
-
-import * as React from 'react';
-
-
-
-import { NavMain } from '@/components/nav/sidebar/nav-main';
-import { NavUser } from '@/components/nav/sidebar/nav-user';
-import { TeamSwitcher } from '@/components/nav/sidebar/team-switcher';
-import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarRail } from '@/components/ui/sidebar';
+import { NavMain } from '@/components/nav/sidebar/nav-main'
+import { NavUser } from '@/components/nav/sidebar/nav-user'
+import { TeamSwitcher } from '@/components/nav/sidebar/team-switcher'
+import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarRail } from '@/components/ui/sidebar'
 
 
 /*
@@ -134,7 +130,7 @@ const data = {
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   return (
-    <Sidebar collapsible='icon'{...props}>
+    <Sidebar collapsible='icon' {...props}>
       <SidebarHeader>
         <TeamSwitcher teams={data.teams} />
       </SidebarHeader>

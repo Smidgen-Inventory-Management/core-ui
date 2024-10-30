@@ -1,6 +1,7 @@
-import { Equipment, EquipmentPartial } from "@/types/equipment"
+import { Equipment, EquipmentPartial, EquipmentStatus } from '@/types/equipment';
 
-export function getEquipment(): Promise<Equipment[]> {
+
+export function getEquipment(): Promise<Equipment[] | null> {
   const headers: Headers = new Headers()
   headers.set('Content-Type', 'application/json')
   headers.set('Accept', 'application/json')
@@ -10,6 +11,7 @@ export function getEquipment(): Promise<Equipment[]> {
     mode: 'cors',
     headers: headers
   })
+
   return fetch(request)
     .then((res) => {
       if (!res.ok) {
@@ -18,6 +20,7 @@ export function getEquipment(): Promise<Equipment[]> {
       return res.json()
     })
     .then((res) => {
+      if (typeof res === 'string') return null
       return res as Equipment[]
     })
     .catch((error) => {
@@ -44,7 +47,6 @@ export function deleteEquipment(id: number): Promise<number> {
     })
   return status
 }
-
 export function updateEquipment(id: number, partialData: EquipmentPartial, receivedDate: string): Promise<number> {
   const getCurrentDate = (): string => {
     const now = new Date()
@@ -55,6 +57,7 @@ export function updateEquipment(id: number, partialData: EquipmentPartial, recei
     business_unit_id: partialData.business_unit_id,
     manufacturer: partialData.manufacturer,
     model: partialData.model,
+    status: partialData.status as EquipmentStatus,
     description: partialData.description,
     date_received: receivedDate,
     last_inventoried: getCurrentDate()

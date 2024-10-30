@@ -4,12 +4,13 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { z } from 'zod'
 
-import { Dispatch, SetStateAction } from 'react'
+import { Dispatch, SetStateAction, useEffect } from 'react'
 
-import { Equipment } from '@/types/equipment'
 import { Button } from '@/components/ui/button'
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
+import { Equipment } from '@/types/equipment'
 import { FormSchema } from '@/types/formSchemas'
 
 /*
@@ -37,7 +38,6 @@ import { FormSchema } from '@/types/formSchemas'
  *   along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-
 interface FormProps {
   setIsSheetOpen: Dispatch<SetStateAction<boolean>>
   onSubmit: SubmitHandler<z.infer<typeof FormSchema>>
@@ -58,6 +58,7 @@ const formFields: {
     min: 1,
     description: 'Business Unit to assign equipment.'
   },
+  { name: 'status', label: 'Status', type: 'Select' },
   { name: 'manufacturer', label: 'Manufacturer', type: 'text' },
   { name: 'model', label: 'Model', type: 'text' },
   { name: 'description', label: 'Description', type: 'text' }
@@ -70,30 +71,68 @@ export function InputForm({ setIsSheetOpen, onSubmit, defaultValues }: FormProps
       business_unit_id: defaultValues.business_unit_id,
       manufacturer: defaultValues.manufacturer,
       model: defaultValues.model,
+      status: defaultValues.status,
       description: defaultValues.description || ''
     }
   })
-
+  useEffect(() => {
+    form.setValue('status', defaultValues.status || 'Unknown')
+  }, [form, defaultValues.status])
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className='w-2/3 space-y-6'>
-        {formFields.map(({ name, label, type, min, description }) => (
-          <FormField
-            key={name}
-            control={form.control}
-            name={name}
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>{label}</FormLabel>
-                <FormControl>
-                  <Input type={type} min={min} {...field} />
-                </FormControl>
-                {description && <FormDescription>{description}</FormDescription>}
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-        ))}
+        {formFields.map(({ name, label, type, min, description }) => {
+          switch (type.toLowerCase()) {
+            case 'number':
+            case 'text':
+              return (
+                <FormField
+                  key={name}
+                  control={form.control}
+                  name={name}
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>{label}</FormLabel>
+                      <FormControl>
+                        <Input type={type} min={min} {...field} />
+                      </FormControl>
+                      {description && <FormDescription>{description}</FormDescription>}
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              )
+            case 'select':
+              return (
+                <FormField
+                  key={name}
+                  control={form.control}
+                  name={name}
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>{label}</FormLabel>
+                      <Select
+                        onValueChange={field.onChange}
+                        defaultValue={field.value ? String(field.value) : 'Unknown'}
+                      >
+                        <SelectTrigger className='w-[180px]'>
+                          <SelectValue placeholder='Unknown' />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value='Deployable'>Deployable</SelectItem>
+                          <SelectItem value='Not Deployable'>Not Deployable</SelectItem>
+                          <SelectItem value='Maintenance'>Maintenance</SelectItem>
+                          <SelectItem value='Surplussed'>Surplussed</SelectItem>
+                          <SelectItem value='Unknown'>Unknown</SelectItem>
+                        </SelectContent>
+                      </Select>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              )
+          }
+        })}
         <Button type='reset' variant='outline' onClick={() => setIsSheetOpen(false)}>
           Cancel
         </Button>

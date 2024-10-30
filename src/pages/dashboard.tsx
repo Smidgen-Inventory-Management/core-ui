@@ -52,9 +52,7 @@ export function DashboardPage() {
           <Tabs defaultValue='overview' className='space-y-4'>
             <TabsList>
               <TabsTrigger value='overview'>Overview</TabsTrigger>
-              <TabsTrigger value='analytics' disabled>
-                Analytics
-              </TabsTrigger>
+              <TabsTrigger value='analytics'>Analytics</TabsTrigger>
               <TabsTrigger value='reports' disabled>
                 Reports
               </TabsTrigger>
@@ -222,6 +220,25 @@ export function DashboardPage() {
                       </div>
                     </div>
                   </CardFooter>
+                </Card>
+              </div>
+            </TabsContent>
+            <TabsContent value='analytics' className='space-y-4'>
+              <div className='grid gap-4 md:grid-cols-2 lg:grid-cols-4'>
+                <Card className='col-span-4'>
+                  <CardHeader>
+                    <CardTitle>Overview</CardTitle>
+                  </CardHeader>
+                  <CardContent className='pl-6'>
+                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Eaque fugit unde nisi placeat voluptatum
+                    incidunt error dolores velit adipisci nam voluptatibus, molestias reiciendis minus maxime mollitia,
+                    voluptates vitae temporibus ducimus omnis accusamus officiis vel alias, doloribus quam. Molestias,
+                    magni fuga odio harum in delectus ratione rem distinctio ex debitis atque eos architecto accusantium
+                    nobis voluptas praesentium adipisci consequuntur doloribus laborum sequi reprehenderit impedit quod
+                    ducimus quis? Corporis itaque maxime laudantium sed tempore dolorem, nesciunt, esse tenetur, nostrum
+                    magni excepturi a! Aliquam non, deleniti explicabo repudiandae velit quis incidunt quod quidem quia.
+                    Tenetur odio nesciunt dolorum quae ad ullam minima voluptas!
+                  </CardContent>
                 </Card>
               </div>
             </TabsContent>

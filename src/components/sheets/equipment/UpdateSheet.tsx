@@ -1,13 +1,18 @@
-import { Row } from '@tanstack/react-table'
-import { SubmitHandler } from 'react-hook-form'
-import { z } from 'zod'
+import { Row } from '@tanstack/react-table';
+import { SubmitHandler } from 'react-hook-form';
 
-import { Dispatch, SetStateAction } from 'react'
 
-import { InputForm } from '@/components/forms/quick-edit-equipment'
-import { Sheet, SheetContent, SheetHeader, SheetTitle } from '@/components/ui/sheet'
-import { Equipment } from '@/types/equipment'
-import { FormSchema } from '@/types/formSchemas'
+
+import { Dispatch, SetStateAction } from 'react';
+
+
+
+import { InputForm } from '@/components/forms/quick-edit-equipment';
+import { Sheet, SheetContent, SheetHeader, SheetTitle } from '@/components/ui/sheet';
+import { Equipment } from '@/types/equipment';
+import { FormSchema } from '@/types/formSchemas';
+import { z } from 'zod';
+
 
 interface UpdateSheetProps {
   isOpen: boolean

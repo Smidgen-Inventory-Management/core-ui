@@ -23,6 +23,7 @@ import { toast } from '@/hooks/use-toast'
 import { updateEquipment } from '@/services/equipment'
 import { Equipment } from '@/types/equipment'
 import { FormSchema } from '@/types/formSchemas'
+import { SubmitHandler } from 'react-hook-form'
 
 /*
  * Smidgen
@@ -171,7 +172,7 @@ export const columns: ColumnDef<Equipment>[] = [
         setIsUpdateSheetOpen(true)
       }
 
-      function onSubmit(data: z.infer<typeof FormSchema>) {
+      const onSubmit: SubmitHandler<z.infer<typeof FormSchema>> = (data: z.infer<typeof FormSchema>) => {
         updateEquipment(row.getValue('equipment_id'), data, row.getValue('date_received'))
         setIsUpdateSheetOpen(false)
         toast({

@@ -173,7 +173,7 @@ export const columns: ColumnDef<Equipment>[] = [
       }
 
       const onSubmit: SubmitHandler<z.infer<typeof FormSchema>> = (data: z.infer<typeof FormSchema>) => {
-        updateEquipment(row.getValue('equipment_id'), data, row.getValue('date_received'))
+        updateEquipment(row.getValue('equipment_id'), data)
         setIsUpdateSheetOpen(false)
         toast({
           title: 'You submitted the following values:',

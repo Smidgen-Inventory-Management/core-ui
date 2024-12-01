@@ -1,17 +1,22 @@
-'use client'
+'use client';
 
-import { zodResolver } from '@hookform/resolvers/zod'
-import { SubmitHandler, useForm } from 'react-hook-form'
-import { z } from 'zod'
+import { zodResolver } from '@hookform/resolvers/zod';
+import { SubmitHandler, useForm } from 'react-hook-form';
+import { z } from 'zod';
 
-import { Dispatch, SetStateAction, useEffect } from 'react'
 
-import { Button } from '@/components/ui/button'
-import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
-import { Input } from '@/components/ui/input'
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
-import { Equipment, EquipmentStatus } from '@/types/equipment'
-import { FormSchema } from '@/types/formSchemas'
+
+import { Dispatch, SetStateAction, useEffect } from 'react';
+
+
+
+import { Button } from '@/components/ui/button';
+import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
+import { Input } from '@/components/ui/input';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Equipment, EquipmentStatus } from '@/types/equipment';
+import { FormSchema } from '@/types/formSchemas';
+
 
 /*
  * Smidgen
@@ -59,28 +64,28 @@ const formFields: {
     description: 'Business Unit to assign equipment.'
   },
   { name: 'status_id', label: 'Status', type: 'Select' },
-  { name: 'manufacturer_id', label: 'Manufacturer', type: 'text' },
+  { name: 'manufacturer_id', label: 'Manufacturer ID', type: 'number', min: 1 },
   { name: 'model', label: 'Model', type: 'text' },
   { name: 'description', label: 'Description', type: 'text' }
 ]
 
 export function InputForm({ setIsSheetOpen, onSubmit, defaultValues }: FormProps) {
+
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
-      equipment_id: defaultValues.equipment_id,
-      date_received: defaultValues.date_received,
-      last_inventoried: defaultValues.last_inventoried,
       business_unit_id: defaultValues.business_unit_id,
       manufacturer_id: defaultValues.manufacturer_id,
       model: defaultValues.model,
-      status_id: String(defaultValues.status_id),
-      description: defaultValues.description
+      status_id: defaultValues.status_id,
+      description: defaultValues.description || ''
     }
   })
 
   useEffect(() => {
-    form.setValue('status_id', String(defaultValues.status_id) || '5')
+    form.setValue('status_id', String(defaultValues.status_id) || String(EquipmentStatus.unknown))
+      console.log('def values:')
+      console.log(defaultValues)
   }, [form, defaultValues.status_id])
 
   return (
@@ -118,17 +123,17 @@ export function InputForm({ setIsSheetOpen, onSubmit, defaultValues }: FormProps
                       <FormLabel>{label}</FormLabel>
                       <Select
                         onValueChange={field.onChange}
-                        defaultValue={field.value ? String(field.value) : String(EquipmentStatus.unknown)}
+                        defaultValue={field.value ? String(field.value) : 'Unknown'}
                       >
                         <SelectTrigger className='w-[180px]'>
-                          <SelectValue placeholder={String(EquipmentStatus.unknown)} />
+                          <SelectValue placeholder='Unknown' />
                         </SelectTrigger>
                         <SelectContent>
-                          <SelectItem value={String(EquipmentStatus.deployable)}>Deployable</SelectItem>
-                          <SelectItem value={String(EquipmentStatus.not_deployable)}>Not Deployable</SelectItem>
-                          <SelectItem value={String(EquipmentStatus.maintenance)}>Maintenance</SelectItem>
-                          <SelectItem value={String(EquipmentStatus.surplussed)}>Surplussed</SelectItem>
-                          <SelectItem value={String(EquipmentStatus.unknown)}>Unknown</SelectItem>
+                          <SelectItem value='1'>Deployable</SelectItem>
+                          <SelectItem value='2'>Not Deployable</SelectItem>
+                          <SelectItem value='3'>Maintenance</SelectItem>
+                          <SelectItem value='4'>Surplussed</SelectItem>
+                          <SelectItem value='5'>Unknown</SelectItem>
                         </SelectContent>
                       </Select>
                       <FormMessage />

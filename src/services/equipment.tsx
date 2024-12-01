@@ -1,4 +1,4 @@
-import { Equipment, EquipmentPartial, EquipmentStatus } from '@/types/equipment';
+import { Equipment } from '@/types/equipment';
 
 
 export function getEquipment(): Promise<Equipment[] | null> {
@@ -47,20 +47,30 @@ export function deleteEquipment(id: number): Promise<number> {
     })
   return status
 }
-export function updateEquipment(id: number, partialData: EquipmentPartial, receivedDate: string): Promise<number> {
+export function updateEquipment(id: number, data: Equipment): Promise<number> {
   const getCurrentDate = (): string => {
     const now = new Date()
     return now.toISOString()
   }
-  const data: Equipment = {
-    equipment_id: id,
-    business_unit_id: partialData.business_unit_id,
-    manufacturer: partialData.manufacturer,
-    model: partialData.model,
-    status: partialData.status as EquipmentStatus,
-    description: partialData.description,
-    date_received: receivedDate,
-    last_inventoried: getCurrentDate()
+
+  const body: {
+    equipment_id: number
+    date_received: string
+    last_inventoried: string
+    business_unit_id: number
+    manufacturer_id: number
+    model: string
+    status_id: number
+    description: string
+  } = {
+    equipment_id: data.equipment_id,
+    date_received: data.date_received,
+    last_inventoried: getCurrentDate(),
+    business_unit_id: data.business_unit_id,
+    manufacturer_id: data.manufacturer_id,
+    model: data.model,
+    status_id: parseInt(data.status_id),
+    description: data.description ? data.description : ''
   }
   const headers: Headers = new Headers()
   headers.set('Content-Type', 'application/json')
@@ -70,7 +80,7 @@ export function updateEquipment(id: number, partialData: EquipmentPartial, recei
     method: 'PUT',
     mode: 'cors',
     headers: headers,
-    body: JSON.stringify(data)
+    body: JSON.stringify(body)
   })
   const status = fetch(request)
     .then((res) => res.status)

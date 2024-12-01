@@ -1,20 +1,17 @@
-export type EquipmentStatus = 'Deployable' | 'Not Deployable' | 'Maintenance' | 'Surplussed' | 'Unknown'
-
+export enum EquipmentStatus {
+  deployable = 1,
+  not_deployable = 2,
+  maintenance = 3,
+  surplussed = 4,
+  unknown = 5
+}
 export type Equipment = {
   equipment_id: number
   business_unit_id: number
-  manufacturer: string
+  manufacturer_id: number
   model: string
   description?: string
-  status: EquipmentStatus
+  status_id?: string
   date_received: string
   last_inventoried: string
-}
-
-export type EquipmentPartial = {
-  business_unit_id: number
-  manufacturer: string
-  model: string
-  status: string
-  description?: string
 }
